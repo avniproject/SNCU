@@ -17,18 +17,18 @@ from   individual
         
         
 -- For Death
-set role sncu;
-update program_enrolment
+  
+  update program_enrolment
 set program_exit_observations = program_exit_observations
     || json_build_object('29238876-fbd8-4f39-b749-edb66024e25e' ,enc.cancel_observations ->> '0066a0f7-c087-40f4-ae44-a3e931967767',
-        'dde645f5-0f70-45e9-a670-b7190c86c981' ,enc.cancel_observations ->> 'dde645f5-0f70-45e9-a670-b7190c86c981',
-        '3b269f11-ed0a-4636-8273-da0259783214' ,enc.cancel_observations ->> '3b269f11-ed0a-4636-8273-da0259783214',
-        '7c88aea6-dfed-451e-a086-881e2dcfd85f' ,enc.cancel_observations ->> '7c88aea6-dfed-451e-a086-881e2dcfd85f')::jsonb
+                         'dde645f5-0f70-45e9-a670-b7190c86c981' ,enc.cancel_observations ->> 'dde645f5-0f70-45e9-a670-b7190c86c981',
+                         '3b269f11-ed0a-4636-8273-da0259783214' ,enc.cancel_observations ->> '3b269f11-ed0a-4636-8273-da0259783214',
+                         '7c88aea6-dfed-451e-a086-881e2dcfd85f' ,array[enc.cancel_observations ->> '7c88aea6-dfed-451e-a086-881e2dcfd85f'])::jsonb,
     program_exit_date_time = cancel_date_time,
     last_modified_by_id = (select id from users where username = 'nupoork@sncu'),
     last_modified_date_time = cancel_date_time
 from   individual
-           left join program_encounter enc on individual.id = enc.individual_id
+    left join program_encounter enc on individual.id = enc.individual_id
 where  individual.id = program_enrolment.individual_id
   and program_exit_date_time is null
   and enc.cancel_observations ->> '0066a0f7-c087-40f4-ae44-a3e931967767'::text = 'cbb0969c-c7fe-4ce4-b8a2-670c4e3c5039';
